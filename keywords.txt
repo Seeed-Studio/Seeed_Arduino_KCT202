@@ -1,0 +1,33 @@
+#######################################
+# Syntax Coloring Map For Grove - Serial LCD GRB BackLight
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+Protocol_oprt	KEYWORD1
+FingerPrint_KCT202	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+begin	KEYWORD2
+setPassWord	KEYWORD2
+verifyPassWord	KEYWORD2
+getCommonResponAndparse	KEYWORD2
+autoRegisterFingerPrint	KEYWORD2
+getRegisterResponAndparse	KEYWORD2
+autoVerifyFingerPrint	KEYWORD2
+getVerifyResponAndparse	KEYWORD2
+cleanAllFingerPrint	KEYWORD2
+scrollDisplayRight	KEYWORD2
+readValidTempCountFingerPrint	KEYWORD2
+getValidTempCntFromRsp	KEYWORD2
+readIndexTableFingerPrint	KEYWORD2
+getFingerTempID	KEYWORD2
+
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
