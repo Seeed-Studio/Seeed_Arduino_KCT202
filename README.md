@@ -14,7 +14,7 @@ The KCT202 is a integrated fingerprint,which based on BYD's fingerprint sensor B
 
 ***
 This software is written by downey  for seeed studio<br>
-Email:dao.huang@seeed.cc
+Email:techsupport@seeed.cc
 and is licensed under [The MIT License](http://opensource.org/licenses/mit-license.php). Check License.txt for more information.<br>
 
 Contributing to this software is warmly welcomed. You can do this basically by<br>
