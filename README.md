@@ -1,4 +1,4 @@
-# Seeed Arduino KCT202
+# Seeed Arduino KCT202  [![Build Status](https://travis-ci.com/Seeed-Studio/Seeed_Arduino_KCT202.svg?branch=master)](https://travis-ci.com/Seeed-Studio/Seeed_Arduino_KCT202)
 
 ## Introduction
 The KCT202 is a integrated fingerprint,which based on BYD's fingerprint sensor BF5325 and a cortex M4 MCU GD32FFPRTG
