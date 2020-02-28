@@ -103,13 +103,12 @@ int8_t FingerPrint_KCT202<T, T1>::autoRegisterFingerPrint(uint16_t finger_ID, ui
     /*directive_code + record_cnt + finger_ID + param*/
     uint8_t data[6] = {0};
     generateAutoRegisterParamData(AUTO_REGISTER_FINGER_TEMP, finger_ID, record_cnt, param, data);
-
+    
     pro.begin(CMD_PACK_ID, sizeof(data) + 2, data, sizeof(data), finger_chip_addr_);
 
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    //this->printHexArray(pro_data,pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -132,7 +131,6 @@ int8_t FingerPrint_KCT202<T, T1>::autoVerifyFingerPrint(uint16_t finger_ID, uint
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -176,7 +174,6 @@ int8_t FingerPrint_KCT202<T, T1>::DeleteFingerPrint(uint16_t finger_ID, uint8_t 
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -196,7 +193,6 @@ int8_t FingerPrint_KCT202<T, T1>::cleanAllFingerPrint() {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -216,7 +212,6 @@ int8_t FingerPrint_KCT202<T, T1>::enterSleepModeFingerPrint() {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -235,7 +230,6 @@ int8_t FingerPrint_KCT202<T, T1>::readValidTempCountFingerPrint() {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    //this->printHexArray(pro_data,pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -259,7 +253,6 @@ int8_t FingerPrint_KCT202<T, T1>::readIndexTableFingerPrint(uint8_t page) {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    //this->printHexArray(pro_data,pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -319,7 +312,6 @@ int8_t FingerPrint_KCT202<T, T1>::setPassWord(uint32_t pswd) {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -341,7 +333,6 @@ int8_t FingerPrint_KCT202<T, T1>::verifyPassWord(uint32_t pswd) {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -363,7 +354,6 @@ int8_t FingerPrint_KCT202<T, T1>::cancelAction() {
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
     }
-    this->printHexArray(pro_data, pro_len);
     this->binWrite(pro_data, pro_len);
     return 0;
 }
@@ -381,31 +371,40 @@ int8_t FingerPrint_KCT202<T, T1>::getRegisterResponAndparse() {
     uint32_t ret_param_len = 0;
     uint8_t data[50] = {0};
     uint32_t data_len = 0;
-    if (false == this->waitForDataTillRespon(data, data_len)) {
-        return -1;
-    }
-    if (Protocol_oprt::checkRecvPack(data, data_len, err_code, ret_param, ret_param_len) < 0) {
-        return -1;
-    }
-    if (err_code != 0x00) {
-        if (0x22 ==  err_code) {
-            this->getDebugSerial()->println("***********************************************************");
-            this->getDebugSerial()->println("This finger-print ID has been registered already.");
-            this->getDebugSerial()->println("***********************************************************");
-        } else {
-            this->getDebugSerial()->print("Register failed,error code = 0x");
-            this->getDebugSerial()->print(err_code, HEX);
-            this->getDebugSerial()->println(" ");
-
-            this->getDebugSerial()->print("Ret param = ");
-            this->printHexArray(ret_param, ret_param_len);
-            this->getDebugSerial()->println(" ");
-
-            this->getDebugSerial()->println("Please check the error code through datasheet!");
+    while(1){
+        if (false == this->waitForDataTillRespon(data, data_len)) {
+            return -1;
         }
-        return -1;
+        if (Protocol_oprt::checkRecvPack(data, data_len, err_code, ret_param, ret_param_len) < 0) {
+            return -1;
+        }
+        if (0x00 != err_code) {
+            if (0x22 ==  err_code) {
+                this->getDebugSerial()->println("***********************************************************");
+                this->getDebugSerial()->println("This finger-print ID has been registered already.");
+                this->getDebugSerial()->println("***********************************************************");
+            } else {
+                this->getDebugSerial()->print("Register failed,error code = 0x");
+                this->getDebugSerial()->print(err_code, HEX);
+                this->getDebugSerial()->println(" ");
+
+                this->getDebugSerial()->print("Ret param = ");
+                this->printHexArray(ret_param, ret_param_len);
+                this->getDebugSerial()->println(" ");
+
+                this->getDebugSerial()->println("Please check the error code through datasheet!");
+            }
+            return -1;
+        }
+        if (SAVE_MODULE == data[data_len-SAVE_MODULE_BIT]){
+            return 0;
+        } else{
+            this->getDebugSerial()->println("***********************************************************");
+            this->getDebugSerial()->println("Please put your finger on the touchpad");
+            this->getDebugSerial()->println("***********************************************************");
+        }
+        
     }
-    return 0;
 }
 
 
@@ -429,34 +428,38 @@ int8_t FingerPrint_KCT202<T, T1>::getVerifyResponAndparse(uint16_t& finger_num) 
     uint32_t ret_param_len = 0;
     uint8_t data[50] = {0};
     uint32_t data_len = 0;
-    if (false == this->waitForDataTillRespon(data, data_len)) {
-        return -1;
-    }
-    if (Protocol_oprt::checkRecvPack(data, data_len, err_code, ret_param, ret_param_len) < 0) {
-        return -1;
-    }
-    if (err_code != 0x00) {
-        if (0x09 == err_code) {
-            this->getDebugSerial()->println("***********************************************************");
-            this->getDebugSerial()->println(" Can't find your fingerprint in templates library.");
-            this->getDebugSerial()->println("***********************************************************");
-        } else {
-            this->getDebugSerial()->print("Verify failed,error code = 0x");
-            this->getDebugSerial()->print(err_code, HEX);
-            this->getDebugSerial()->println(" ");
-
-            this->getDebugSerial()->print("Ret param = ");
-            this->printHexArray(ret_param, ret_param_len);
-            this->getDebugSerial()->println(" ");
-
-            this->getDebugSerial()->println("Please check the error code through datasheet!");
-
+    while(1){
+        if (false == this->waitForDataTillRespon(data, data_len)) {
+            return -1;
         }
-        return -1;
+        if (Protocol_oprt::checkRecvPack(data, data_len, err_code, ret_param, ret_param_len) < 0) {
+            return -1;
+        }
+        if (err_code != 0x00) {
+            if (0x09 == err_code) {
+                this->getDebugSerial()->println("***********************************************************");
+                this->getDebugSerial()->println(" Can't find your fingerprint in templates library.");
+                this->getDebugSerial()->println("***********************************************************");
+            } else {
+                this->getDebugSerial()->print("Verify failed,error code = 0x");
+                this->getDebugSerial()->print(err_code, HEX);
+                this->getDebugSerial()->println(" ");
+
+                this->getDebugSerial()->print("Ret param = ");
+                this->printHexArray(ret_param, ret_param_len);
+                this->getDebugSerial()->println(" ");
+
+                this->getDebugSerial()->println("Please check the error code through datasheet!");
+
+            }
+            return -1;
+        }
+        if (REGISTER_CHECK == data[data_len-SREGISTER_CHECK_BIT]){
+            finger_num  |= (uint16_t)ret_param[1] << 8;
+            finger_num  |=  ret_param[2];
+            return 0;
+        }
     }
-    finger_num  |= (uint16_t)ret_param[1] << 8;
-    finger_num  |=  ret_param[2];
-    return 0;
 }
 
 

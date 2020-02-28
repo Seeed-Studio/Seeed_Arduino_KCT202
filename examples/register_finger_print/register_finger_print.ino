@@ -81,9 +81,8 @@ void loop() {
                                    PRETREATMENT_GRAGH | NOT_RET_FOR_EVERY_STEP);
     debug.println(" ");
     debug.println("Usage:");
-    debug.println("    Please put your finger on the touchpad, from green light which on the touchpad lights on till it lights off.");
-    debug.println("    Repeat for 4 times.");
-    debug.println("    If the red light lights on, it indicates that an error occurred.");
+    debug.println("    Please put your finger on the touchpad");
+    debug.println("    Repeat for 4 times or pressed continuously");
     debug.println(" ");
     debug.println(" ");
     debug.println(" ");

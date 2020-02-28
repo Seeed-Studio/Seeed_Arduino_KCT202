@@ -44,6 +44,8 @@
 #define SET_PASSWORD               0x12
 #define VERIFY_PASSWORD            0x13
 #define CANCEL_ACTION              0x30
+#define REGISTER_CHECK             0x05
+#define SAVE_MODULE                0x06
 
 
 #define CHECK_ALL_FINGER_TEMP      0xffff
@@ -52,10 +54,10 @@
 #define     PRETREATMENT_GRAGH                  1 << 1
 #define     NOT_RET_FOR_EVERY_STEP              1 << 2
 #define     OVERRIDE_CURR_FINGER_PRINT          1 << 3
-#define     DETECT_FINGER_PRINT_EXIST           1 << 4
+#define     DETECT_FINGER_PRINT_EXIST           1 << 6
 
-
-
+#define SAVE_MODULE_BIT 4
+#define SREGISTER_CHECK_BIT 7
 
 template <class T, class T1>
 class FingerPrint_KCT202: public ATSerial<T, T1>, public Protocol_oprt {

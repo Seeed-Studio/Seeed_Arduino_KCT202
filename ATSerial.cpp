@@ -271,6 +271,7 @@ bool ATSerial<T, T1>::waitForDataTillRespon(uint8_t* recv_msg, uint32_t& recv_le
     int i = 0;
     int ch = 0;
     uint32_t time = 0;
+    recv_len = 0;
     if (NULL == recv_msg) {
         return false;
     }
