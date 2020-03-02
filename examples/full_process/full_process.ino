@@ -74,8 +74,9 @@ void loop(void) {
                                    PRETREATMENT_GRAGH | NOT_RET_FOR_EVERY_STEP | OVERRIDE_CURR_FINGER_PRINT);
     debug.println(" ");
     debug.println("Usage:");
-    debug.println("    Please put your finger on the touchpad");
-    debug.println("    Repeat for 4 times or pressed continuously");
+    debug.println("    Please put your finger on the touchpad, from green light which on the touchpad lights on till it lights off.");
+    debug.println("    Repeat for 4 times.");
+    debug.println("    If the red light lights on, it indicates that an error occurred.");
     debug.println(" ");
     debug.println(" ");
     debug.println(" ");
@@ -86,7 +87,7 @@ void loop(void) {
     kct202.autoVerifyFingerPrint(CHECK_ALL_FINGER_TEMP,
                                  LED_OFF_AFTER_GET_GRAGH | PRETREATMENT_GRAGH | NOT_RET_FOR_EVERY_STEP);
     debug.println(" ");
-    debug.println("Please put your finger on the touchpad.");
+    debug.println("Please put your finger on the touchpad, from green light which on the touchpad lights on till it lights off.");
     debug.println("To verify your finger print.");
     debug.println(" ");
     debug.println(" ");

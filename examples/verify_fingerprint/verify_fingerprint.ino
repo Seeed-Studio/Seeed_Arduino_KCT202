@@ -77,7 +77,7 @@ void loop() {
     kct202.autoVerifyFingerPrint(CHECK_ALL_FINGER_TEMP,
                                  LED_OFF_AFTER_GET_GRAGH | PRETREATMENT_GRAGH | NOT_RET_FOR_EVERY_STEP);
     debug.println(" ");
-    debug.println("Please put your finger on the touchpad.");
+    debug.println("Please put your finger on the touchpad, from green light which on the touchpad lights on till it lights off.");
     debug.println("To verify your finger print.");
     debug.println(" ");
     debug.println(" ");
