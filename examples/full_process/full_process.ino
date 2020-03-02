@@ -25,7 +25,8 @@
     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
-*/#include "ATSerial.h"
+*/
+#include "ATSerial.h"
 #include "Protocol.h"
 #include "KCT202.h"
 
@@ -34,19 +35,14 @@
     #define debug  Serial
     SoftwareSerial uart(2, 3);
     FingerPrint_KCT202<SoftwareSerial, HardwareSerial> kct202;
-
 #elif defined(ARDUINO_ARCH_SAM)
     #define debug  SerialUSB
     #define uart Serial
-    //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
-    //FingerPrint_KCT202<HardwareSerial,Serial_> kct202;
     FingerPrint_KCT202<Uart, Serial_> kct202;
 #elif defined(ARDUINO_ARCH_SAMD)
-    #define debug  SerialUSB
-    #define uart Serial
-    //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
-    FingerPrint_KCT202<Uart, Serial_> kct202;
-
+    #define debug SerialUSB
+    #define uart  Serial1
+    FingerPrint_KCT202<Uart,Serial_> kct202;
 #else
     #define debug  Serial
     SoftwareSerial uart(2, 3);

@@ -35,19 +35,14 @@
     #define debug  Serial
     SoftwareSerial uart(2, 3);
     FingerPrint_KCT202<SoftwareSerial, HardwareSerial> kct202;
-
 #elif defined(ARDUINO_ARCH_SAM)
     #define debug  SerialUSB
     #define uart Serial
-    //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
-    //FingerPrint_KCT202<HardwareSerial,Serial_> kct202;
     FingerPrint_KCT202<Uart, Serial_> kct202;
 #elif defined(ARDUINO_ARCH_SAMD)
     #define debug  SerialUSB
-    #define uart Serial
-    //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
+    #define uart Serial1
     FingerPrint_KCT202<Uart, Serial_> kct202;
-
 #else
     #define debug  Serial
     SoftwareSerial uart(2, 3);
@@ -55,16 +50,15 @@
 #endif
 
 
-void setup(void) {
-    debug.begin(115200);
-    kct202.begin(uart, debug);
-}
-
 Protocol_oprt oprt;
 uint8_t err_code = 0;
 uint8_t param[40];
 uint32_t param_len;
 
+void setup(void) {
+    debug.begin(115200);
+    kct202.begin(uart, debug);
+}
 
 void loop() {
 

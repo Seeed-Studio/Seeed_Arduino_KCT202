@@ -26,8 +26,6 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-
-
 #include "ATSerial.h"
 #include "Protocol.h"
 #include "KCT202.h"
@@ -37,19 +35,14 @@
     #define debug  Serial
     SoftwareSerial uart(2, 3);
     FingerPrint_KCT202<SoftwareSerial, HardwareSerial> kct202;
-
 #elif defined(ARDUINO_ARCH_SAM)
     #define debug  SerialUSB
     #define uart Serial
-    //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
-    //FingerPrint_KCT202<HardwareSerial,Serial_> kct202;
     FingerPrint_KCT202<Uart, Serial_> kct202;
 #elif defined(ARDUINO_ARCH_SAMD)
     #define debug  SerialUSB
-    #define uart Serial
-    //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
+    #define uart Serial1
     FingerPrint_KCT202<Uart, Serial_> kct202;
-
 #else
     #define debug  Serial
     SoftwareSerial uart(2, 3);
@@ -83,7 +76,6 @@ void loop() {
 
     kct202.readIndexTableFingerPrint(0);
     kct202.getCommonResponAndparse(err_code, param, param_len);
-    //kct202.printHexArray(param,param_len);
     kct202.getFingerTempID(param, param_len, 0);
 
     while (1);
