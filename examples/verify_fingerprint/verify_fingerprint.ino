@@ -66,11 +66,12 @@ uint32_t param_len;
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
-    kct202.configMoudle(KCT202_CFG_SL, 3);
+    kct202.configModule(KCT202_CFG_SL, 3);
 }
 
 uint16_t finger_num;
 void loop() {
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B);
     //The first param is the finger-print ID to check.
     //if set 0xffff,indicates that search for all the finger-print templates and try to match.
     kct202.autoVerifyFingerPrint(CHECK_ALL_FINGER_TEMP,
@@ -86,6 +87,10 @@ void loop() {
         debug.println("Verify ok!");
         debug.print("Your finger temp id = ");
         debug.println(finger_num, HEX);
+        kct202.controlBLN(KCT202_LED_ON, KCT202_LED_G);
+    }
+    else {
+        kct202.controlBLN(KCT202_LED_BLINK, KCT202_LED_R);
     }
     delay(2000);
 }

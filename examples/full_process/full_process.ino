@@ -63,11 +63,12 @@ uint32_t param_len;
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
-    configMoudle(KCT202_CFG_SL, 3);
+    kct202.configModule(KCT202_CFG_SL, 3);
 }
 
 
 void loop(void) {
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B);
     uint16_t finger_num = 0;
     //Specify the finger print ID 0x01,collect four times finger-print。
     //If there is finger-print which ID is 0x01 already,Then override it.
@@ -83,8 +84,13 @@ void loop(void) {
     debug.println(" ");
     if (0 == kct202.getRegisterResponAndparse()) {
         debug.println("Register ok!");
+        kct202.controlBLN(KCT202_LED_ON, KCT202_LED_G);
+    }
+    else {
+        kct202.controlBLN(KCT202_LED_BLINK, KCT202_LED_R);
     }
     delay(1000);
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B | KCT202_LED_G);
     kct202.autoVerifyFingerPrint(CHECK_ALL_FINGER_TEMP,
                                  LED_OFF_AFTER_GET_GRAGH | PRETREATMENT_GRAGH | NOT_RET_FOR_EVERY_STEP);
     debug.println(" ");
@@ -98,9 +104,13 @@ void loop(void) {
         debug.println("Verify ok!");
         debug.print("Your finger temp id = ");
         debug.println(finger_num, HEX);
+        kct202.controlBLN(KCT202_LED_ON, KCT202_LED_G);
+    }
+    else {
+        kct202.controlBLN(KCT202_LED_BLINK, KCT202_LED_R);
     }
 
-    delay(500);
+    delay(1000);
     kct202.cleanAllFingerPrint();
 
     if (0 == kct202.getCommonResponAndparse(err_code, param, param_len)) {
