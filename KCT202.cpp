@@ -499,6 +499,10 @@ int8_t FingerPrint_KCT202<T, T1>::getCommonResponAndparse(uint8_t& error_code, u
     return -1;
 }
 
+/** Send serial cmd to control LED, and then waiting for response.
+    state : The state of led, referring to manual
+    color : The color of led, using "|" to get composite color
+ * */
 template <class T, class T1>
 int8_t FingerPrint_KCT202<T, T1>::controlBLN(uint8_t state, uint8_t color)
 {
@@ -507,7 +511,7 @@ int8_t FingerPrint_KCT202<T, T1>::controlBLN(uint8_t state, uint8_t color)
     uint8_t pro_data[20] = {0};
     uint32_t pro_len = 0;
     /*directive_code + funtion code + start color + end color + cycle times */
-    uint8_t data[5] = {CONTROL_LED, (state?0x03:0x04), color, color, 0x00};
+    uint8_t data[5] = {CONTROL_LED, state, color, color, 0x00};
     pro.begin(CMD_PACK_ID, sizeof(data) + 2, data, sizeof(data), finger_chip_addr_);
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
         return -1;
@@ -526,14 +530,18 @@ int8_t FingerPrint_KCT202<T, T1>::controlBLN(uint8_t state, uint8_t color)
     return 0;
 }
 
+/** Send serial cmd to configure module, and then waiting for response.
+    setting : The code of configuration item.
+    value : The value of configuration item.
+ * */
 template <class T, class T1>
-int8_t FingerPrint_KCT202<T, T1>::configMoudle(uint8_t setting, uint8_t value)
+int8_t FingerPrint_KCT202<T, T1>::configModule(uint8_t setting, uint8_t value)
 {
     Protocol pro;
     Protocol_oprt pro_oprt;
     uint8_t pro_data[16] = {0};
     uint32_t pro_len = 0;
-    /*directive_code + funtion code + start color + end color + cycle times */
+    /*directive_code + configuration item + configuration value */
     uint8_t data[3] = {CONFIG_MODULE, setting, value};
     pro.begin(CMD_PACK_ID, sizeof(data) + 2, data, sizeof(data), finger_chip_addr_);
     if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {

@@ -47,6 +47,10 @@
 #define CONTROL_LED                0x3c
 #define CONFIG_MODULE              0x0e
 
+#define KCT202_LED_BREATH          0x01
+#define KCT202_LED_BLINK           0x02
+#define KCT202_LED_ON              0x03
+#define KCT202_LED_OFF             0x04
 #define KCT202_LED_R               1 << 2
 #define KCT202_LED_G               1 << 1
 #define KCT202_LED_B               1 << 0
@@ -146,7 +150,7 @@ class FingerPrint_KCT202: public ATSerial<T, T1>, public Protocol_oprt {
     int8_t getFingerTempID(uint8_t* data, uint32_t data_len, uint8_t page);
 
     int8_t controlBLN(uint8_t state, uint8_t color);
-    int8_t configMoudle(uint8_t setting, uint8_t value);
+    int8_t configModule(uint8_t setting, uint8_t value);
 
   private:
     /** The parameters of auto-register fingerprint template protocol.
