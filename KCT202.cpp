@@ -499,6 +499,60 @@ int8_t FingerPrint_KCT202<T, T1>::getCommonResponAndparse(uint8_t& error_code, u
     return -1;
 }
 
+template <class T, class T1>
+int8_t FingerPrint_KCT202<T, T1>::controlBLN(uint8_t state, uint8_t color)
+{
+    Protocol pro;
+    Protocol_oprt pro_oprt;
+    uint8_t pro_data[20] = {0};
+    uint32_t pro_len = 0;
+    /*directive_code + funtion code + start color + end color + cycle times */
+    uint8_t data[5] = {CONTROL_LED, (state?0x03:0x04), color, color, 0x00};
+    pro.begin(CMD_PACK_ID, sizeof(data) + 2, data, sizeof(data), finger_chip_addr_);
+    if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
+        return -1;
+    }
+    this->binWrite(pro_data, pro_len);
+
+    uint8_t ret_data[13] = {0};
+    uint32_t ret_data_len = 0;
+    if (this->waitForDataTillRespon(ret_data, ret_data_len) == false) {
+        return -1;
+    }
+    if (ret_data[9] != 0x00) {
+        this->getDebugSerial()->println(" LED control failed.");
+        return -1;
+    }
+    return 0;
+}
+
+template <class T, class T1>
+int8_t FingerPrint_KCT202<T, T1>::configMoudle(uint8_t setting, uint8_t value)
+{
+    Protocol pro;
+    Protocol_oprt pro_oprt;
+    uint8_t pro_data[16] = {0};
+    uint32_t pro_len = 0;
+    /*directive_code + funtion code + start color + end color + cycle times */
+    uint8_t data[3] = {CONFIG_MODULE, setting, value};
+    pro.begin(CMD_PACK_ID, sizeof(data) + 2, data, sizeof(data), finger_chip_addr_);
+    if (pro_oprt.generatePack(pro, pro_data, pro_len) < 0) {
+        return -1;
+    }
+    this->binWrite(pro_data, pro_len);
+
+    uint8_t ret_data[13] = {0};
+    uint32_t ret_data_len = 0;
+    if (this->waitForDataTillRespon(ret_data, ret_data_len) == false) {
+        return -1;
+    }
+    if (ret_data[9] != 0x00) {
+        this->getDebugSerial()->println(" Module configure failed.");
+        return -1;
+    }
+    return 0;
+}
+
 
 #if defined(ARDUINO_ARCH_AVR)
     template class FingerPrint_KCT202<SoftwareSerial, HardwareSerial>;

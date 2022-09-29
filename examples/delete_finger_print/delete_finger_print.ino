@@ -63,7 +63,7 @@ uint32_t param_len;
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
-
+    kct202.configMoudle(KCT202_CFG_SL, 3);
 }
 
 uint16_t valid_temp_cnt = 0;

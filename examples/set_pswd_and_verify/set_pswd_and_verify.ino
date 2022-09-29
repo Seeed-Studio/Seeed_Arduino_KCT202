@@ -58,6 +58,7 @@
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
+    kct202.configMoudle(KCT202_CFG_SL, 3);
 }
 
 Protocol_oprt oprt;
