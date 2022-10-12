@@ -65,17 +65,25 @@ uint32_t param_len;
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
-
+    kct202.configModule(KCT202_CFG_SL, 3);
 }
 
 uint16_t valid_temp_cnt = 0;
 void loop() {
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B);
     kct202.readValidTempCountFingerPrint();
     kct202.getCommonResponAndparse(err_code, param, param_len);
     valid_temp_cnt = kct202.getValidTempCntFromRsp(param);
-    debug.print("Valit template count = ");
-    debug.println(valid_temp_cnt);
-
+    if(valid_temp_cnt == 0) {
+        debug.println("No valid template is found.");
+        kct202.controlBLN(KCT202_LED_BLINK, KCT202_LED_R);
+    }
+    else {
+        debug.print("Valit template count = ");
+        debug.println(valid_temp_cnt);
+        kct202.controlBLN(KCT202_LED_ON, KCT202_LED_G);
+    }
+    
     //The max number that template library can hold is 1024;
     //Split to 4 pages,every page uses 32 bytes to indicate 256 fingerprints,every bit corresponding to a fingerprint ID.
     //That is:(32 bytes) * (4 pages) * (8 bit) = 1024

@@ -65,15 +65,16 @@ uint32_t param_len;
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
+    kct202.configModule(KCT202_CFG_SL, 3);
 }
 
 void loop() {
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B);
     /** If there is a directive is running, we cancel it and execute the next directive.
         Actually，this directive just for showing how it works here,In most case, it is unnecessary.  .
      * */
     //kct202.cancelAction();
     //kct202.getCommonResponAndparse(err_code,param,param_len);
-
 
     //Specify the finger print ID 0x01,collect four times finger-print。
     //If there is finger-print which ID is 0x01 already,Then a error occurred.  lack of "OVERRIDE_CURR_FINGER_PRINT"
@@ -89,7 +90,13 @@ void loop() {
     debug.println(" ");
     if (0 == kct202.getRegisterResponAndparse()) {
         debug.println("Register ok!");
+        kct202.controlBLN(KCT202_LED_ON, KCT202_LED_G);
     }
+    else {
+        kct202.controlBLN(KCT202_LED_BLINK, KCT202_LED_R);
+    }
+    delay(2000);
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B);
     while (1);
 }
 

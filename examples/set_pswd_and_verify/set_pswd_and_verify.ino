@@ -58,6 +58,7 @@
 void setup(void) {
     debug.begin(115200);
     kct202.begin(uart, debug);
+    kct202.configModule(KCT202_CFG_SL, 3);
 }
 
 Protocol_oprt oprt;
@@ -68,9 +69,10 @@ uint32_t param_len;
 
 void loop() {
 
+    kct202.controlBLN(KCT202_LED_BREATH, KCT202_LED_B);
     kct202.setPassWord(0x01020304);
     kct202.getCommonResponAndparse(err_code, param, param_len);
-    delay(500);
+    delay(2000);
 
     //Verify the wrong password.
     kct202.verifyPassWord(0x01010101);
@@ -79,8 +81,9 @@ void loop() {
         debug.println("**************************************************************");
         debug.println("verify failed");
         debug.println("**************************************************************");
+        kct202.controlBLN(KCT202_LED_BLINK, KCT202_LED_R);
     }
-    delay(500);
+    delay(2000);
 
     //Verify the correct password
     kct202.verifyPassWord(0x01020304);
@@ -89,6 +92,7 @@ void loop() {
         debug.println("**************************************************************");
         debug.println("verify succeed");
         debug.println("**************************************************************");
+        kct202.controlBLN(KCT202_LED_ON, KCT202_LED_G);
     }
     delay(500);
 
