@@ -46,6 +46,11 @@
     #define uart Serial
     //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
     FingerPrint_KCT202<Uart, Serial_> kct202;
+#elif defined(ARDUINO_ARCH_ESP32)
+    #define debug Serial
+    #define uart Serial2
+    FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
+    //FingerPrint_KCT202<Uart, Serial_> kct202;
 
 #else
     #define debug  Serial

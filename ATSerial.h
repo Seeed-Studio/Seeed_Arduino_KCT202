@@ -32,6 +32,8 @@
 
 #include <Arduino.h>
 #if defined(ARDUINO_ARCH_SAMD)
+#elif defined(ARDUINO_ARCH_ESP32)
+    #include <HardwareSerial.h>
 
 #else
     #include "SoftwareSerial.h"
@@ -57,6 +59,10 @@
     #define UART_MAX_LEN   1024
     #define debug Serial
     #define DEBUG_EN 0
+#elif defined(ARDUINO_ARCH_ESP32)
+    #define UART_MAX_LEN   1024
+    #define debug Serial
+    #define DEBUG_EN 1
 #else
     #define debug Serial
     #define DEBUG_EN 0
