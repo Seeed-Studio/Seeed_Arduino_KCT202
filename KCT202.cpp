@@ -572,6 +572,9 @@ int8_t FingerPrint_KCT202<T, T1>::configModule(uint8_t setting, uint8_t value)
     //template class FingerPrint_KCT202<HardwareSerial,HardwareSerial>;
     //template class FingerPrint_KCT202<HardwareSerial,Serial_>;
     template class FingerPrint_KCT202<Uart, Serial_>;
+#elif defined(ARDUINO_ARCH_ESP32)
+    template class FingerPrint_KCT202<HardwareSerial,HardwareSerial>;
+    //template class FingerPrint_KCT202<Uart, Serial_>;
 #else
     template class FingerPrint_KCT202<SoftwareSerial, HardwareSerial>;
 #endif

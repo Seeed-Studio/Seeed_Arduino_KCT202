@@ -324,6 +324,9 @@ void ATSerial<T, T1>::printHexArray(uint8_t* data, uint32_t data_len) {
     //template class ATSerial<HardwareSerial,HardwareSerial>;
     //template class ATSerial<HardwareSerial,Serial_>;
     template class ATSerial<Uart, Serial_>;
+#elif defined(ARDUINO_ARCH_ESP32)
+    template class ATSerial<HardwareSerial,HardwareSerial>;
+    //template class ATSerial<Uart, Serial_>;
 #else
     template class ATSerial<SoftwareSerial, HardwareSerial>;
 #endif
