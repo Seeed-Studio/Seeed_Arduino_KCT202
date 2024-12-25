@@ -43,16 +43,37 @@
     //FingerPrint_KCT202<HardwareSerial,Serial_> kct202;
     FingerPrint_KCT202<Uart, Serial_> kct202;
 #elif defined(ARDUINO_ARCH_SAMD)
-    #define debug  SerialUSB
-    #define uart Serial
+    #if defined(SEEED_XIAO_M0)
+        #define debug  Serial
+        #define uart Serial1
+    #else
+        #define debug  SerialUSB
+        #define uart Serial
+    #endif
+
     //FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
     FingerPrint_KCT202<Uart, Serial_> kct202;
 #elif defined(ARDUINO_ARCH_ESP32)
+    #if defined(CONFIG_IDF_TARGET_ESP32C3) ||  defined(CONFIG_IDF_TARGET_ESP32C6)
+    #define debug Serial
+    #define uart Serial1
+    FingerPrint_KCT202<HardwareSerial,HWCDC> kct202;
+    //FingerPrint_KCT202<Uart, Serial_> kct202;
+    #elif defined(CONFIG_IDF_TARGET_ESP32S3)
+    #define debug Serial
+    #define uart Serial2
+    FingerPrint_KCT202<HardwareSerial,HWCDC> kct202;
+    #else
     #define debug Serial
     #define uart Serial2
     FingerPrint_KCT202<HardwareSerial,HardwareSerial> kct202;
     //FingerPrint_KCT202<Uart, Serial_> kct202;
+    #endif
 
+#elif defined(NRF52840_XXAA)
+    #define debug  Serial
+    SoftwareSerial uart(D6, D7);
+    FingerPrint_KCT202<SoftwareSerial, Adafruit_USBD_CDC> kct202;
 #else
     #define debug  Serial
     SoftwareSerial uart(2, 3);
